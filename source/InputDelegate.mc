@@ -1,9 +1,3 @@
-//
-// Copyright 2016 by Garmin Ltd. or its subsidiaries.
-// Subject to Garmin SDK License Agreement and Wearables
-// Application Developer Agreement.
-//
-
 using Toybox.WatchUi;
 using Toybox.Graphics;
 using Toybox.System;
@@ -32,36 +26,14 @@ class InputDelegate extends WatchUi.BehaviorDelegate {
         buttons_expected = deviceSettings.inputButtons;
     }
 
-//    function onNextPage() {
-//        onChangePage(1);
-//        return false;
-//    }
-//
-//    function onPreviousPage() {
-//        onChangePage(-1);
-//        return false;
-//    }
-
-	function onSwipe(swipeEvent){
-		var direction = swipeEvent.getDirection();
-		if (direction == WatchUi.SWIPE_DOWN){
-			onChangePage(1);
-			return true;
-		}else if(direction == WatchUi.SWIPE_UP){
-			onChangePage(-1);
-			return true;
-		}else if(direction == WatchUi.SWIPE_LEFT){
-			onChangePage(-1);
-			return true;
-		}else if(direction == WatchUi.SWIPE_RIGHT){
-			onChangePage(-1);
-			return true;
-		}
-		return false;
-	}
-
 	function onTap(clickEvent){
-		onChangePage(1);
+
+		var coord = clickEvent.getCoordinates();
+		if (coord[0] < System.getDeviceSettings().screenWidth/3){
+			onChangePage(-1);
+		}else if (coord[0] > 2 * System.getDeviceSettings().screenWidth/3){
+			onChangePage(1);
+		}
 		return false;
 	}
 

@@ -1,6 +1,7 @@
 <strings>
     <string id="AppName">SensorHistoryWidget</string>
-    
+   
+    <string id="NotAvailable" scope="foreground">Sensor \n history \n not \n available</string>
 	<!--Pressure -->
 	<string id="PrU" scope="foreground">Pressure Unit</string>
 	

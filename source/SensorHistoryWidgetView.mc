@@ -7,6 +7,9 @@ using Toybox.Application;
 var sensArray, sensArrayInd;
 var values;
 const imageFont = Application.loadResource(Rez.Fonts.images);
+enum{
+	CURRENT_INDEX,
+}
 
 function onChangePage(NextPrev){
 	sensArrayInd += NextPrev;
@@ -21,12 +24,16 @@ function onChangePage(NextPrev){
 
 class SensorHistoryWidgetView extends WatchUi.View {
 
-	//var graphLayer;
-
+	var arrowWidth;
 
     function initialize() {
 
-    	sensArrayInd = 0;
+		View.initialize();
+    	sensArrayInd = Application.Storage.getValue(CURRENT_INDEX);
+    	if (sensArrayInd == null){
+    		sensArrayInd = 0;
+    	}
+
     	sensArray = new [0];
 
     	if (Toybox.SensorHistory has :getHeartRateHistory){
@@ -76,7 +83,7 @@ class SensorHistoryWidgetView extends WatchUi.View {
     		:image => sensArray[sensArrayInd][:image]
     	};
 
-        View.initialize();
+
     }
 
     // Load your resources here
@@ -156,7 +163,7 @@ class SensorHistoryWidgetView extends WatchUi.View {
 		View.addLayer(lastLayer);
 		View.addLayer(maxLayer);
 
-
+		arrowWidth = graphLayer.getX() / 2;
 
     }
 
@@ -170,20 +177,45 @@ class SensorHistoryWidgetView extends WatchUi.View {
     function onUpdate(dc) {
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
-   		var layers = View.getLayers();
-		for (var i = 0; i < layers.size(); i++){
-			layers[i].draw();
+	    if (sensArray.size() > 0){
+	   		var layers = View.getLayers();
+			for (var i = 0; i < layers.size(); i++){
+				layers[i].draw();
+			}
+			drawArrow(dc, 0, 1);
+			drawArrow(dc, dc.getWidth(), -1);
+		}else{
+			dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+			dc.drawText(
+				dc.getWidth()/2,
+				dc.getHeight()/2,
+				Graphics.FONT_LARGE,
+				Application.loadResource(Rez.Strings.NotAvailable),
+				Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER
+			);
 		}
     }
+
+	function drawArrow(dc, x, direction){
+		var arrowHeight = arrowWidth * 0.75;
+		var y = dc.getHeight()/2;
+		var pts =
+			[
+				[x, y],
+				[x + arrowWidth * direction, y + arrowHeight],
+				[x + arrowWidth * direction, y - arrowHeight]
+			];
+		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+		dc.fillPolygon(pts);
+	}
 
     // Called when this View is removed from the screen. Save the
     // state of this View here. This includes freeing resources from
     // memory.
     function onHide() {
+    	Application.Storage.setValue(CURRENT_INDEX, sensArrayInd);
     }
 
 	function drawPage(dc){
-
-
 	}
 }

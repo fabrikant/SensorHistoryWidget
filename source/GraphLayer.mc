@@ -13,11 +13,12 @@ class GraphLayer extends WatchUi.Layer {
     function initialize(param) {
 
 
-		height = 105;
+		height = 125;
 		width = 180;
 		color = Graphics.COLOR_WHITE;
-
 		var coord = Tools.coordBottom(param[:dc], width, height);
+		coord[1] = coord[1] + height - getLocalHeight();
+
         Layer.initialize(
         	{
         		:locX => coord[0],
@@ -38,9 +39,7 @@ class GraphLayer extends WatchUi.Layer {
     	var iterParam = {:period => width, :order => SensorHistory.ORDER_NEWEST_FIRST};
     	var iter = sensArray[sensArrayInd][:iterMethod].invoke(iterParam);
 
-    	var localHeight = height
-    		- Graphics.getFontHeight(Graphics.FONT_XTINY)
-    		-(Graphics.getFontHeight(Graphics.FONT_XTINY) - Graphics.getFontAscent(Graphics.FONT_XTINY));
+    	var localHeight = getLocalHeight();
 		axes(localHeight);
 
 
@@ -88,7 +87,7 @@ class GraphLayer extends WatchUi.Layer {
 				}
 				if(!sample.when.add(hourDur).greaterThan(when)){
 					when = sample.when;
-					targetDc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+					targetDc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 					targetDc.drawLine(x, localHeight-8, x, localHeight);
 
 					var timeInfo = Gregorian.info(when, Time.FORMAT_SHORT);
@@ -130,4 +129,9 @@ class GraphLayer extends WatchUi.Layer {
 		targetDc.fillRectangle(0, 0, width, height);
 	}
 
+	function getLocalHeight(){
+		return height
+    		- Graphics.getFontHeight(Graphics.FONT_XTINY)
+    		-(Graphics.getFontHeight(Graphics.FONT_XTINY) - Graphics.getFontAscent(Graphics.FONT_XTINY));
+	}
 }

@@ -2,6 +2,7 @@ using Toybox.Application;
 
 class SensorHistoryWidgetApp extends Application.AppBase {
 
+
     function initialize() {
         AppBase.initialize();
     }
