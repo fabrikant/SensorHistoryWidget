@@ -1,0 +1,82 @@
+using Toybox.WatchUi;
+using Toybox.Graphics;
+
+
+class TextLayer extends WatchUi.Layer {
+
+	var width = 0, height = 0, color, font;
+
+    function initialize(param) {
+
+		font = param[:font];
+
+		width = param[:dc].getTextWidthInPixels(0.format("%0"+param[:maxLenght]+"d"), font);
+		//height = Graphics.getFontHeight(font)-2*(Graphics.getFontHeight(font) - Graphics.getFontAscent(font));
+		height = Graphics.getFontHeight(font)-(Graphics.getFontHeight(font) - Graphics.getFontAscent(font));
+		if (param[:color]==null){
+			color = Graphics.COLOR_WHITE;
+		}else{
+			color = param[:color];
+		}
+
+		//var coord = Tools.coordTop(param[:dc], width, height);
+        Layer.initialize(
+        	{
+        		:locX => param[:x],
+        		:locY => param[:y],
+        		:width => width,
+        		:height => height,
+        		:visibility => true,
+        		:identifier	=> param[:id]
+        	}
+        );
+    }
+
+    function draw(){
+    	clear();
+    	//border();
+		var targetDc = getDc();
+		var text = values[getId()];
+		//System.println(text);
+
+//		if (getId() == :min){
+//			text = "min "+text;
+//		} else if (getId() == :max){
+//			text = "max "+text;
+//		}
+//		if (getId() == :last){
+//			text = Tools.stringReplace(text, "k", "");
+//		}
+
+		targetDc.setColor(color,Graphics.COLOR_TRANSPARENT);
+//		targetDc.drawText(
+//			0,
+//			height/2 - 1,
+//			font,
+//			text,
+//			Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER
+//		);
+
+		targetDc.drawText(
+			width/2 - 1,
+			height/2 - 1,
+			font,
+			text,
+			Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER
+		);
+
+    }
+
+    function border(){
+		var targetDc = getDc();
+	    targetDc.setColor(color, Graphics.COLOR_TRANSPARENT);
+		targetDc.drawRectangle(0, 0, width, height);
+	}
+
+    function clear(){
+		var targetDc = getDc();
+	    targetDc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
+		targetDc.fillRectangle(0, 0, width, height);
+	}
+
+}
