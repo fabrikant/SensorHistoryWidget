@@ -19,4 +19,7 @@ class SensorHistoryWidgetApp extends Application.AppBase {
         return [ new SensorHistoryWidgetView(), new InputDelegate() ];
     }
 
+	function onSettingsChanged() { // triggered by settings change in GCM
+	    WatchUi.requestUpdate();   // update the view to reflect changes
+	}
 }

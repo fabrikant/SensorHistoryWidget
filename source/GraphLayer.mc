@@ -2,6 +2,8 @@ using Toybox.WatchUi;
 using Toybox.Graphics;
 using Toybox.Math;
 using Toybox.SensorHistory;
+using Toybox.Time;
+using Toybox.Time.Gregorian;
 
 
 class GraphLayer extends WatchUi.Layer {
@@ -32,67 +34,88 @@ class GraphLayer extends WatchUi.Layer {
     function draw(){
 
      	clear();
-     	axes();
     	//border();
-    	var iterParam = {:period => width, :order => SensorHistory.ORDER_OLDEST_FIRST};
+    	var iterParam = {:period => width, :order => SensorHistory.ORDER_NEWEST_FIRST};
     	var iter = sensArray[sensArrayInd][:iterMethod].invoke(iterParam);
+
+    	var localHeight = height
+    		- Graphics.getFontHeight(Graphics.FONT_XTINY)
+    		-(Graphics.getFontHeight(Graphics.FONT_XTINY) - Graphics.getFontAscent(Graphics.FONT_XTINY));
+		axes(localHeight);
+
+
 		var min = iter.getMin();
 		var max = iter.getMax();
 		var sample = iter.next();
 		var oldX = null;
 		var oldY = null;
-		var x = 0;
+		var x = width;
 		var y = 0;
 		var data;
 		var targetDc = getDc();
+		var lastData = null;
+
+		var when = null;
+		var hourDur = new Time.Duration(Gregorian.SECONDS_PER_HOUR);
+		var showTime = true;
+		var xLabel = width;
 
 		targetDc.setPenWidth(2);
+
 		while (sample != null){
 
 			data = sample.data;
 			if (data != null){
-				y = height - (data - min)*height/(max-min);
+				if (max-min > 0){
+					y = localHeight - (data - min)*localHeight/(max-min);
+				}else{
+					y = 0;
+				}
 				if (oldX != null){
 					targetDc.setColor(color, Graphics.COLOR_TRANSPARENT);
 					targetDc.drawLine(x, y, oldX, oldY);
 				}
-
-				if (data.equals(min)){
-					values[:minTime] = sample.when;
-					targetDc.setColor(Graphics.COLOR_BLUE , Graphics.COLOR_TRANSPARENT);
-					targetDc.fillCircle(x, y, 3);
+				oldX = x;
+				oldY = y;
+				if (lastData == null){
+					lastData = data;
 				}
-
-				if (data.equals(max)){
-					values[:maxTime] = sample.when;
-					targetDc.setColor(Graphics.COLOR_RED , Graphics.COLOR_TRANSPARENT);
-					targetDc.fillCircle(x, y, 3);
-				}
-
 			}
-			x += 1;
-			oldX = x;
-			oldY = y;
-			sample = iter.next();
-		}
 
-		var step = x/4;
-		targetDc.setColor(Graphics.COLOR_LT_GRAY,Graphics.COLOR_TRANSPARENT);
-		for (var i = step; i<x; i += step){
-			targetDc.drawLine(i, height-8, i, height);
+			if (sample.when != null){
+				if (when == null){
+					when = sample.when;
+				}
+				if(!sample.when.add(hourDur).greaterThan(when)){
+					when = sample.when;
+					targetDc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+					targetDc.drawLine(x, localHeight-8, x, localHeight);
+
+					var timeInfo = Gregorian.info(when, Time.FORMAT_SHORT);
+					var time = Lang.format("$1$:$2$", [timeInfo.hour.format("%02d"), timeInfo.min.format("%02d")]);
+					if (xLabel - x > targetDc.getTextWidthInPixels(time, Graphics.FONT_XTINY)){
+						targetDc.drawText(x, localHeight, Graphics.FONT_XTINY, time, Graphics.TEXT_JUSTIFY_CENTER);
+						xLabel = x;
+					}
+				}
+			}
+
+			x -= 1;
+			sample = iter.next();
 		}
 
 		values[:min] = sensArray[sensArrayInd][:convertetMethod].invoke(min);
 		values[:max] = sensArray[sensArrayInd][:convertetMethod].invoke(max);
-		values[:last] = sensArray[sensArrayInd][:convertetMethod].invoke(data);
+		values[:last] = sensArray[sensArrayInd][:convertetMethod].invoke(lastData);
     }
 
-	function axes(){
+	function axes(localHeight){
 		var targetDc = getDc();
 		targetDc.setColor(Graphics.COLOR_LT_GRAY,Graphics.COLOR_TRANSPARENT);
 		targetDc.setPenWidth(1);
-		targetDc.drawLine(0, 0, 0, width);
-		targetDc.drawLine(0, height-1, width, height-1);
+		targetDc.drawLine(0, 0, 0,  localHeight-1);
+		targetDc.drawLine(width-1, 0, width-1,  localHeight-1);
+		targetDc.drawLine(0, localHeight-1, width-1, localHeight-1);
 	}
 
     function border(){

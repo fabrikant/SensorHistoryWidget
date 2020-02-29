@@ -15,7 +15,6 @@ function onChangePage(NextPrev){
 	}else if (sensArrayInd < 0){
 		sensArrayInd = sensArray.size()-1;
 	}
-//	System.println("ind3 "+sensArrayInd);
 	values[:image] = sensArray[sensArrayInd][:image];
 	WatchUi.requestUpdate();
 }
@@ -74,8 +73,6 @@ class SensorHistoryWidgetView extends WatchUi.View {
     		:min => 0,
     		:max => 0,
     		:last => 0,
-    		:minTime => null,
-    		:maxTime => null,
     		:image => sensArray[sensArrayInd][:image]
     	};
 
@@ -116,7 +113,7 @@ class SensorHistoryWidgetView extends WatchUi.View {
 
 			}
 		);
-		var lastLayer = new TextLayer(
+		var lastLayer = new LastValueLayer(
 			{
 				:dc => dc,
 				:id => :last,

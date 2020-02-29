@@ -80,22 +80,21 @@ module Tools {
 
 	function pressure(rawData){
 		var value = rawData; /*Pa */
-		//var unit  = Application.Properties.getValue("PrU");
-		var unit = 0;
+		var unit  = Application.Properties.getValue("PrU");
 		if (unit == 0){ /*MmHg*/
-			value = Math.round(rawData/133.322);
+			value = Math.round(rawData/133.322).format("%d");
 		}else if (unit == 1){ /*Psi*/
-			value = Math.round(rawData/6894.757);
+			value = (rawData/6894.757).format("%.1f");
 		}else if (unit == 2){ /*InchHg*/
-			value = Math.round(rawData/3386.389);
+			value = (rawData/3386.389).format("%.1f");
 		}else if (unit == 3){ /*bar*/
-			value = (rawData/100000);
+			value = (rawData/100000).format("%.2f");
 		}else if (unit == 4){ /*kPa*/
-			value = (rawData/1000);
+			value = (rawData/1000).format("%.1f");
 		}else if (unit == 5){ /*hPa*/
-			value = (rawData/100);
+			value = (rawData/100).format("%d");
 		}
-		return value.format("%d");
+		return value;
 	}
 
 	function temperature(rawData){
@@ -114,14 +113,14 @@ module Tools {
 			value = rawData*3.281;
 		}
 
-//		if (value > 9999){
-//			value = (value/1000).format("%.1f")+"k";
-//		}else if (value > 999){
-//			value = (value/1000).format("%.2f")+"k";
-//		}else{
-//			value =  value.format("%d");
-//		}
-		value =  value.format("%d");
+		if (value > 9999){
+			value = (value/1000).format("%.1f")+"k";
+		}else if (value > 999){
+			value = (value/1000).format("%.2f")+"k";
+		}else{
+			value =  value.format("%d");
+		}
+
 		return value;
 	}
 

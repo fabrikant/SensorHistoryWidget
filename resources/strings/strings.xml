@@ -1,3 +1,15 @@
 <strings>
     <string id="AppName">SensorHistoryWidget</string>
+    
+	<!--Pressure -->
+	<string id="PrU" scope="foreground">Pressure Unit</string>
+	
+	<!--PRESSURE UNITS -->
+	<string id="PrUMmHg" scope="foreground">mmHg</string>
+	<string id="PrUPsi" scope="foreground">Psi</string>
+	<string id="PrUInchHg" scope="foreground">inchHg</string>
+	<string id="PrUBar" scope="foreground">Bar</string>
+	<string id="PrUKPa" scope="foreground">kPa</string>
+	<string id="PrUhPa" scope="foreground">hPa</string>
+    
 </strings>

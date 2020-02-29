@@ -1,0 +1,17 @@
+<settings>
+
+
+	<!--UNIT PRESSURE -->
+	<setting propertyKey="@Properties.PrU"
+		title="@Strings.PrU">
+		<settingConfig type="list">
+			<listEntry value="0">@Strings.PrUMmHg</listEntry>
+			<listEntry value="1">@Strings.PrUPsi</listEntry>
+			<listEntry value="2">@Strings.PrUInchHg</listEntry>
+			<listEntry value="3">@Strings.PrUBar</listEntry>
+			<listEntry value="4">@Strings.PrUKPa</listEntry>
+			<listEntry value="5">@Strings.PrUhPa</listEntry>
+		</settingConfig>
+	</setting>
+
+</settings>
