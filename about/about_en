@@ -1,0 +1,3 @@
+This is a simple free and opensourse widget. Displays sensor history: Heart rate, pressure, altitude, temperature.
+The units of temperature and altitude depend of the device settings. 
+The unit of pressure is set in the settings (default mmHg).
