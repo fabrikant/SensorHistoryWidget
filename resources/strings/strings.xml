@@ -11,6 +11,6 @@
 	<string id="PrUInchHg" scope="foreground">inchHg</string>
 	<string id="PrUBar" scope="foreground">Bar</string>
 	<string id="PrUKPa" scope="foreground">kPa</string>
-	<string id="PrUhPa" scope="foreground">hPa</string>
+	<string id="PrUhPa" scope="foreground">millibar (hPa)</string>
     
 </strings>

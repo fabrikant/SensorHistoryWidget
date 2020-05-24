@@ -4,14 +4,15 @@ using Toybox.Graphics;
 
 class TextLayer extends WatchUi.Layer {
 
-	var width = 0, height = 0, color, font;
+	var width = 0, height = 0, color, fontIdx;
 
     function initialize(param) {
 
-		font = param[:font];
+		fontIdx = param[:font];
 
-		width = param[:dc].getTextWidthInPixels("."+0.format("%0"+param[:maxLenght]+"d"), font);
-		height = Graphics.getFontHeight(font)-(Graphics.getFontHeight(font) - Graphics.getFontAscent(font));
+		//var font = getFont();
+		width = param[:dc].getTextWidthInPixels("."+0.format("%0"+param[:maxLenght]+"d"),  getFont());
+		height = Graphics.getFontHeight( getFont())-(Graphics.getFontHeight( getFont()) - Graphics.getFontAscent( getFont()));
 		if (param[:color]==null){
 			color = Graphics.COLOR_WHITE;
 		}else{
@@ -33,7 +34,7 @@ class TextLayer extends WatchUi.Layer {
 
     function draw(){
     	clear();
-    	//border();
+    	border();
 		var targetDc = getDc();
 		var text = values[getId()];
 		targetDc.setColor(color,Graphics.COLOR_TRANSPARENT);
@@ -41,13 +42,14 @@ class TextLayer extends WatchUi.Layer {
 		targetDc.drawText(
 			width/2 - 1,
 			height/2 - 1,
-			font,
+			getFont(),
 			text,
 			Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER
 		);
     }
 
     function border(){
+    	return;
 		var targetDc = getDc();
 	    targetDc.setColor(color, Graphics.COLOR_TRANSPARENT);
 		targetDc.drawRectangle(0, 0, width, height);
@@ -59,4 +61,15 @@ class TextLayer extends WatchUi.Layer {
 		targetDc.fillRectangle(0, 0, width, height);
 	}
 
+	function getFont(){
+		if (fontIdx == MED_FONT){
+			return medFont;
+		} else if (fontIdx == BIG_FONT){
+			return bigFont;
+		} else if (fontIdx == IMAGE_FONT){
+			return imageFont;
+		} else {
+			return smallFont;
+		}
+	}
 }

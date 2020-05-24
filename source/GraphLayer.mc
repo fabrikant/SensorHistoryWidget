@@ -35,7 +35,7 @@ class GraphLayer extends WatchUi.Layer {
     function draw(){
 
      	clear();
-    	//border();
+    	border();
     	var iterParam = {:period => width, :order => SensorHistory.ORDER_NEWEST_FIRST};
     	var iter = sensArray[sensArrayInd][:iterMethod].invoke(iterParam);
 
@@ -92,8 +92,8 @@ class GraphLayer extends WatchUi.Layer {
 
 					var timeInfo = Gregorian.info(when, Time.FORMAT_SHORT);
 					var time = Lang.format("$1$:$2$", [timeInfo.hour.format("%02d"), timeInfo.min.format("%02d")]);
-					if (xLabel - x > targetDc.getTextWidthInPixels(time, Graphics.FONT_XTINY)){
-						targetDc.drawText(x, localHeight, Graphics.FONT_XTINY, time, Graphics.TEXT_JUSTIFY_CENTER);
+					if (xLabel - x > targetDc.getTextWidthInPixels(time, smallFont)){
+						targetDc.drawText(x, localHeight, smallFont, time, Graphics.TEXT_JUSTIFY_CENTER);
 						xLabel = x;
 					}
 				}
@@ -118,6 +118,7 @@ class GraphLayer extends WatchUi.Layer {
 	}
 
     function border(){
+    	return;
 		var targetDc = getDc();
 	    targetDc.setColor(color, Graphics.COLOR_TRANSPARENT);
 		targetDc.drawRectangle(0, 0, width, height);
@@ -131,7 +132,7 @@ class GraphLayer extends WatchUi.Layer {
 
 	function getLocalHeight(){
 		return height
-    		- Graphics.getFontHeight(Graphics.FONT_XTINY)
-    		-(Graphics.getFontHeight(Graphics.FONT_XTINY) - Graphics.getFontAscent(Graphics.FONT_XTINY));
+    		- Graphics.getFontHeight(smallFont)
+    		-(Graphics.getFontHeight(smallFont) - Graphics.getFontAscent(smallFont));
 	}
 }

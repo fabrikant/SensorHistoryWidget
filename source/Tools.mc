@@ -92,7 +92,7 @@ module Tools {
 			value = (rawData/100000).format("%.2f");
 		}else if (unit == 4){ /*kPa*/
 			value = (rawData/1000).format("%.1f");
-		}else if (unit == 5){ /*hPa*/
+		}else if (unit == 5){ /*hPa miliBar*/
 			value = (rawData/100).format("%d");
 		}
 		return value;
@@ -137,14 +137,5 @@ module Tools {
 		}else{//240
 			return [125, 180];
 		}
-	}
-
-	function getLastValueFont(){
-		var res = Graphics.FONT_NUMBER_HOT;
-		var screenHeight = System.getDeviceSettings().screenHeight;
-		if (screenHeight == 218 || screenHeight == 260){
-			res = Graphics.FONT_LARGE;
-		}
-		return res;
 	}
 }

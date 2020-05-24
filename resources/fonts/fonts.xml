@@ -1,4 +1,10 @@
 <fonts>
 	<font id="images" scope="foreground"
 		filename="fonts-images/SensorHistoryWidget_24.fnt" />
+	<font id="big" scope="foreground"
+		filename="roboto/roboto_digits_48_black.fnt" />
+	<font id="med" scope="foreground"
+		filename="roboto/roboto_digits_25_black.fnt" />
+	<font id="small" scope="foreground"
+		filename="roboto/roboto_17_black.fnt" />
 </fonts>

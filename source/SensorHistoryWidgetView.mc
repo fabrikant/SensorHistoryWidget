@@ -7,8 +7,16 @@ using Toybox.Application;
 var sensArray, sensArrayInd;
 var values;
 const imageFont = Application.loadResource(Rez.Fonts.images);
+const bigFont = Application.loadResource(Rez.Fonts.big);
+const smallFont = Application.loadResource(Rez.Fonts.small);
+const medFont = Application.loadResource(Rez.Fonts.med);
+
 enum{
 	CURRENT_INDEX,
+	IMAGE_FONT,
+	BIG_FONT,
+	SMALL_FONT,
+	MED_FONT
 }
 
 function onChangePage(NextPrev){
@@ -103,7 +111,7 @@ class SensorHistoryWidgetView extends WatchUi.View {
 				:maxLenght => 4,
 				:x => 0,
 				:y => 0,
-				:font => Graphics.FONT_SYSTEM_LARGE,
+				:font => MED_FONT,
 				:color => Graphics.COLOR_BLUE
 
 			}
@@ -115,19 +123,19 @@ class SensorHistoryWidgetView extends WatchUi.View {
 				:maxLenght => 4,
 				:x => 0,
 				:y => 0,
-				:font => Graphics.FONT_SYSTEM_LARGE,
+				:font => MED_FONT,
 				:color => Graphics.COLOR_RED
 
 			}
 		);
-		var lastLayer = new LastValueLayer(
+		var lastLayer = new TextLayer(
 			{
 				:dc => dc,
 				:id => :last,
 				:maxLenght => 4,
 				:x => 0,
 				:y => 0,
-				:font => Graphics.FONT_NUMBER_HOT
+				:font => BIG_FONT
 
 			}
 		);
@@ -139,7 +147,7 @@ class SensorHistoryWidgetView extends WatchUi.View {
 				:maxLenght => 2,
 				:x => 0,
 				:y => 0,
-				:font => imageFont,
+				:font => IMAGE_FONT,
 				:color => Graphics.COLOR_LT_GRAY
 			}
 		);
@@ -197,16 +205,18 @@ class SensorHistoryWidgetView extends WatchUi.View {
     }
 
 	function drawArrow(dc, x, direction){
-		var arrowHeight = arrowWidth * 0.75;
-		var y = dc.getHeight()/2;
-		var pts =
-			[
-				[x, y],
-				[x + arrowWidth * direction, y + arrowHeight],
-				[x + arrowWidth * direction, y - arrowHeight]
-			];
-		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		dc.fillPolygon(pts);
+		if ( System.getDeviceSettings().isTouchScreen){
+			var arrowHeight = arrowWidth * 0.75;
+			var y = dc.getHeight()/2;
+			var pts =
+				[
+					[x, y],
+					[x + arrowWidth * direction, y + arrowHeight],
+					[x + arrowWidth * direction, y - arrowHeight]
+				];
+			dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+			dc.fillPolygon(pts);
+		}
 	}
 
     // Called when this View is removed from the screen. Save the
@@ -216,6 +226,6 @@ class SensorHistoryWidgetView extends WatchUi.View {
     	Application.Storage.setValue(CURRENT_INDEX, sensArrayInd);
     }
 
-	function drawPage(dc){
-	}
+//	function drawPage(dc){
+//	}
 }

@@ -1,5 +1,4 @@
 using Toybox.WatchUi;
-using Toybox.Graphics;
 using Toybox.System;
 
 var last_key = null;
@@ -36,5 +35,14 @@ class InputDelegate extends WatchUi.BehaviorDelegate {
 		}
 		return false;
 	}
+
+
+	function onKey(keyEvent) {
+        if (keyEvent.getKey() == WatchUi.KEY_ENTER){
+        	onChangePage(1);
+        }
+        return false;
+    }
+
 
 }
