@@ -12,9 +12,9 @@ class GraphLayer extends WatchUi.Layer {
 
     function initialize(param) {
 
-
-		height = 125;
-		width = 180;
+		var _hw = Tools.getGraphLayerHW();
+		height = _hw[0];
+		width = _hw[1];
 		color = Graphics.COLOR_WHITE;
 		var coord = Tools.coordBottom(param[:dc], width, height);
 		coord[1] = coord[1] + height - getLocalHeight();

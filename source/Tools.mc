@@ -3,6 +3,7 @@ using Toybox.System;
 using Toybox.Math;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
+using Toybox.Graphics;
 
 module Tools {
 
@@ -126,5 +127,24 @@ module Tools {
 
 	function heartRate(rawData){
 		return rawData.format("%d");
+	}
+
+	function getGraphLayerHW(){
+		if (System.getDeviceSettings().screenHeight == 218){
+			return [110, 160];
+		}else if (System.getDeviceSettings().screenHeight == 260){
+			return [140, 190];
+		}else{//240
+			return [125, 180];
+		}
+	}
+
+	function getLastValueFont(){
+		var res = Graphics.FONT_NUMBER_HOT;
+		var screenHeight = System.getDeviceSettings().screenHeight;
+		if (screenHeight == 218 || screenHeight == 260){
+			res = Graphics.FONT_LARGE;
+		}
+		return res;
 	}
 }
