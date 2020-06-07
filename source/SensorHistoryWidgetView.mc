@@ -223,7 +223,9 @@ class SensorHistoryWidgetView extends WatchUi.View {
     // state of this View here. This includes freeing resources from
     // memory.
     function onHide() {
-    	Application.Storage.setValue(CURRENT_INDEX, sensArrayInd);
+    	if (sensArrayInd != null){
+    		Application.Storage.setValue(CURRENT_INDEX, sensArrayInd);
+    	}
     }
 
 //	function drawPage(dc){

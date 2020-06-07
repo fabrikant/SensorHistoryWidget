@@ -126,7 +126,11 @@ module Tools {
 	}
 
 	function heartRate(rawData){
-		return rawData.format("%d");
+		if (rawData == null){
+			return 0;
+		}else{
+			return rawData.format("%d");
+		}
 	}
 
 	function getGraphLayerHW(){
