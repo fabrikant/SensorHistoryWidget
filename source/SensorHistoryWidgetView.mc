@@ -55,7 +55,7 @@ class SensorHistoryWidgetView extends WatchUi.View {
 				{
 					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getOxygenSaturationHistory),
 					:convertetMethod => new Lang.Method(Tools, :oxygenSaturation),
-					:image => "h",
+					:image => "o",
 					:priceOfDivision => Gregorian.SECONDS_PER_DAY
 				}
 			);

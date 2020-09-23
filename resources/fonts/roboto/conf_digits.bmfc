@@ -5,7 +5,7 @@ fileVersion=1
 fontName=Roboto Black
 fontFile=
 charSet=0
-fontSize=-67
+fontSize=-25
 aa=1
 scaleH=100
 useSmoothing=0
@@ -15,8 +15,8 @@ useUnicode=1
 disableBoxChars=1
 outputInvalidCharGlyph=1
 dontIncludeKerningPairs=0
-useHinting=1
-renderFromOutline=1
+useHinting=0
+renderFromOutline=0
 useClearType=0
 
 # character alignment
@@ -50,6 +50,6 @@ invB=0
 outlineThickness=0
 
 # selected chars
-chars=44-46,48-58,176
+chars=37,44-46,48-58,107,176
 
 # imported icon images
