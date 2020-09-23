@@ -55,7 +55,7 @@ class GraphLayer extends WatchUi.Layer {
 		var lastData = null;
 
 		var when = null;
-		var hourDur = new Time.Duration(Gregorian.SECONDS_PER_HOUR);
+		var dur = new Time.Duration(sensArray[sensArrayInd][:priceOfDivision]);
 		var showTime = true;
 		var xLabel = width;
 
@@ -85,13 +85,18 @@ class GraphLayer extends WatchUi.Layer {
 				if (when == null){
 					when = sample.when;
 				}
-				if(!sample.when.add(hourDur).greaterThan(when)){
+				if(!sample.when.add(dur).greaterThan(when)){
 					when = sample.when;
 					targetDc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 					targetDc.drawLine(x, localHeight-8, x, localHeight);
 
-					var timeInfo = Gregorian.info(when, Time.FORMAT_SHORT);
-					var time = Lang.format("$1$:$2$", [timeInfo.hour.format("%02d"), timeInfo.min.format("%02d")]);
+					var timeInfo = Gregorian.info(when, Time.FORMAT_MEDIUM);
+					var time;
+					if (sensArray[sensArrayInd][:priceOfDivision] == Gregorian.SECONDS_PER_HOUR){
+						time = Lang.format("$1$:$2$", [timeInfo.hour.format("%02d"), timeInfo.min.format("%02d")]);
+					}else{
+						time = Lang.format(" $1$ ", [timeInfo.day_of_week]);
+					}
 					if (xLabel - x > targetDc.getTextWidthInPixels(time, smallFont)){
 						targetDc.drawText(x, localHeight, smallFont, time, Graphics.TEXT_JUSTIFY_CENTER);
 						xLabel = x;

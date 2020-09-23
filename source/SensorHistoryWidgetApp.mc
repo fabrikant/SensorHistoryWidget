@@ -1,9 +1,23 @@
 using Toybox.Application;
+using Toybox.Graphics;
+using Toybox.System;
+
+var sensArray, sensArrayInd;
+var values;
+const imageFont = Application.loadResource(Rez.Fonts.images);
+const bigFont = Application.loadResource(Rez.Fonts.big);
+const medFont = Application.loadResource(Rez.Fonts.med);
+var smallFont;
 
 class SensorHistoryWidgetApp extends Application.AppBase {
 
 
     function initialize() {
+    	if (System.getSystemStats().totalMemory > 62000){
+    		smallFont = Application.loadResource(Rez.Fonts.small);
+    	}else{
+    		smallFont = Graphics.FONT_XTINY;
+    	}
         AppBase.initialize();
     }
 

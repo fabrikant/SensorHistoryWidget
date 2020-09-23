@@ -133,6 +133,14 @@ module Tools {
 		}
 	}
 
+	function oxygenSaturation(rawData){
+		if (rawData == null){
+			return 0;
+		}else{
+			return rawData.format("%d")+"%";
+		}
+	}
+
 	function getGraphLayerHW(){
 		if (System.getDeviceSettings().screenHeight == 218){
 			return [110, 160];

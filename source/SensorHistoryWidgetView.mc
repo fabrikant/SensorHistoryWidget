@@ -3,13 +3,8 @@ using Toybox.System;
 using Toybox.Graphics;
 using Toybox.SensorHistory;
 using Toybox.Application;
+using Toybox.Time.Gregorian;
 
-var sensArray, sensArrayInd;
-var values;
-const imageFont = Application.loadResource(Rez.Fonts.images);
-const bigFont = Application.loadResource(Rez.Fonts.big);
-const smallFont = Application.loadResource(Rez.Fonts.small);
-const medFont = Application.loadResource(Rez.Fonts.med);
 
 enum{
 	CURRENT_INDEX,
@@ -49,7 +44,19 @@ class SensorHistoryWidgetView extends WatchUi.View {
 				{
 					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getHeartRateHistory),
 					:convertetMethod => new Lang.Method(Tools, :heartRate),
-					:image => "h"
+					:image => "h",
+					:priceOfDivision => Gregorian.SECONDS_PER_HOUR
+				}
+			);
+    	}
+    
+    	if (Toybox.SensorHistory has :getOxygenSaturationHistory){
+			sensArray.add(
+				{
+					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getOxygenSaturationHistory),
+					:convertetMethod => new Lang.Method(Tools, :oxygenSaturation),
+					:image => "h",
+					:priceOfDivision => Gregorian.SECONDS_PER_DAY
 				}
 			);
     	}
@@ -59,7 +66,8 @@ class SensorHistoryWidgetView extends WatchUi.View {
 				{
 					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getPressureHistory),
 					:convertetMethod => new Lang.Method(Tools, :pressure),
-					:image => "b"
+					:image => "b",
+					:priceOfDivision => Gregorian.SECONDS_PER_HOUR
 				}
 			);
     	}
@@ -69,7 +77,8 @@ class SensorHistoryWidgetView extends WatchUi.View {
 				{
 					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getTemperatureHistory),
 					:convertetMethod => new Lang.Method(Tools, :temperature),
-					:image => "t"
+					:image => "t",
+					:priceOfDivision => Gregorian.SECONDS_PER_HOUR
 				}
 			);
     	}
@@ -79,7 +88,8 @@ class SensorHistoryWidgetView extends WatchUi.View {
 				{
 					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getElevationHistory),
 					:convertetMethod => new Lang.Method(Tools, :elevation),
-					:image => "e"
+					:image => "e",
+					:priceOfDivision => Gregorian.SECONDS_PER_HOUR
 				}
 			);
     	}
