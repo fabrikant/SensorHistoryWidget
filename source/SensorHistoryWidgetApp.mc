@@ -4,20 +4,25 @@ using Toybox.System;
 
 var sensArray, sensArrayInd;
 var values;
-const imageFont = Application.loadResource(Rez.Fonts.images);
-const bigFont = Application.loadResource(Rez.Fonts.big);
-const medFont = Application.loadResource(Rez.Fonts.med);
+var imageFont;
+var bigFont;
+var medFont;
 var smallFont;
 
+enum{
+	CURRENT_INDEX,
+	IMAGE_FONT,
+	BIG_FONT,
+	SMALL_FONT,
+	MED_FONT
+}
 class SensorHistoryWidgetApp extends Application.AppBase {
 
 
     function initialize() {
-    	if (System.getSystemStats().totalMemory > 62000){
-    		smallFont = Application.loadResource(Rez.Fonts.small);
-    	}else{
-    		smallFont = Graphics.FONT_XTINY;
-    	}
+    	imageFont = Application.loadResource(Rez.Fonts.images);
+    	sensArrayInd = Tools.getStorage(CURRENT_INDEX, 0);
+		Tools.getSenseArray();
         AppBase.initialize();
     }
 
@@ -32,6 +37,10 @@ class SensorHistoryWidgetApp extends Application.AppBase {
     // Return the initial view of your application here
     function getInitialView() {
         return [ new SensorHistoryWidgetView(), new InputDelegate() ];
+    }
+
+	function getGlanceView() {
+        return [ new HistoryGlanceView() ];
     }
 
 	function onSettingsChanged() { // triggered by settings change in GCM

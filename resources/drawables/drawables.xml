@@ -1,3 +1,7 @@
 <drawables>
-    <bitmap id="LauncherIcon" filename="launcher_icon.png" />
+    <bitmap id="LauncherIcon" filename="history.png"> 
+		<palette disableTransparency="false">
+			<color>FFFFFF</color>
+		</palette>    
+    </bitmap>
 </drawables>

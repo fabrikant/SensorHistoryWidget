@@ -5,15 +5,6 @@ using Toybox.SensorHistory;
 using Toybox.Application;
 using Toybox.Time.Gregorian;
 
-
-enum{
-	CURRENT_INDEX,
-	IMAGE_FONT,
-	BIG_FONT,
-	SMALL_FONT,
-	MED_FONT
-}
-
 function onChangePage(NextPrev){
 	sensArrayInd += NextPrev;
 	if (sensArrayInd >= sensArray.size()){
@@ -30,78 +21,24 @@ class SensorHistoryWidgetView extends WatchUi.View {
 	var arrowWidth;
 
     function initialize() {
+		
+    	if (System.getSystemStats().totalMemory > 62000){
+    		bigFont = Application.loadResource(Rez.Fonts.big);
+			medFont = Application.loadResource(Rez.Fonts.med);
+    		smallFont = Application.loadResource(Rez.Fonts.small);
+    	}else{
+    		bigFont = Application.loadResource(Rez.Fonts.big);
+			medFont = Graphics.FONT_SYSTEM_SMALL;
+    		smallFont = Graphics.FONT_XTINY;
+    	}
 
 		View.initialize();
-    	sensArrayInd = Application.Storage.getValue(CURRENT_INDEX);
-    	if (sensArrayInd == null){
-    		sensArrayInd = 0;
-    	}
-
-    	sensArray = new [0];
-
-    	if (Toybox.SensorHistory has :getHeartRateHistory){
-			sensArray.add(
-				{
-					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getHeartRateHistory),
-					:convertetMethod => new Lang.Method(Tools, :heartRate),
-					:image => "h",
-					:priceOfDivision => Gregorian.SECONDS_PER_HOUR
-				}
-			);
-    	}
-    
-    	if (Toybox.SensorHistory has :getOxygenSaturationHistory){
-			sensArray.add(
-				{
-					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getOxygenSaturationHistory),
-					:convertetMethod => new Lang.Method(Tools, :oxygenSaturation),
-					:image => "o",
-					:priceOfDivision => Gregorian.SECONDS_PER_DAY
-				}
-			);
-    	}
-
-    	if (Toybox.SensorHistory has :getPressureHistory){
-			sensArray.add(
-				{
-					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getPressureHistory),
-					:convertetMethod => new Lang.Method(Tools, :pressure),
-					:image => "b",
-					:priceOfDivision => Gregorian.SECONDS_PER_HOUR
-				}
-			);
-    	}
-
-    	if (Toybox.SensorHistory has :getTemperatureHistory){
-			sensArray.add(
-				{
-					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getTemperatureHistory),
-					:convertetMethod => new Lang.Method(Tools, :temperature),
-					:image => "t",
-					:priceOfDivision => Gregorian.SECONDS_PER_HOUR
-				}
-			);
-    	}
-
-    	if (Toybox.SensorHistory has :getElevationHistory){
-			sensArray.add(
-				{
-					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getElevationHistory),
-					:convertetMethod => new Lang.Method(Tools, :elevation),
-					:image => "e",
-					:priceOfDivision => Gregorian.SECONDS_PER_HOUR
-				}
-			);
-    	}
-
     	values = {
     		:min => 0,
     		:max => 0,
     		:last => 0,
     		:image => sensArray[sensArrayInd][:image]
     	};
-
-
     }
 
     // Load your resources here
@@ -185,15 +122,10 @@ class SensorHistoryWidgetView extends WatchUi.View {
 
     }
 
-    // Called when this View is brought to the foreground. Restore
-    // the state of this View and prepare it to be shown. This includes
-    // loading resources into memory.
     function onShow() {
     }
 
-    // Update the view
     function onUpdate(dc) {
-        // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
 	    if (sensArray.size() > 0){
 	   		var layers = View.getLayers();
@@ -237,7 +169,4 @@ class SensorHistoryWidgetView extends WatchUi.View {
     		Application.Storage.setValue(CURRENT_INDEX, sensArrayInd);
     	}
     }
-
-//	function drawPage(dc){
-//	}
 }

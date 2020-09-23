@@ -4,6 +4,7 @@ using Toybox.Math;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
 using Toybox.Graphics;
+using Toybox.Lang;
 
 module Tools {
 
@@ -150,4 +151,77 @@ module Tools {
 			return [125, 180];
 		}
 	}
+	
+	function getSenseArray(){
+    	sensArray = new [0];
+
+    	if (Toybox.SensorHistory has :getHeartRateHistory){
+			sensArray.add(
+				{
+					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getHeartRateHistory),
+					:convertetMethod => new Lang.Method(Tools, :heartRate),
+					:image => "h",
+					:priceOfDivision => Gregorian.SECONDS_PER_HOUR
+				}
+			);
+    	}
+    
+    	if (Toybox.SensorHistory has :getOxygenSaturationHistory){
+			sensArray.add(
+				{
+					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getOxygenSaturationHistory),
+					:convertetMethod => new Lang.Method(Tools, :oxygenSaturation),
+					:image => "o",
+					:priceOfDivision => Gregorian.SECONDS_PER_DAY
+				}
+			);
+    	}
+
+    	if (Toybox.SensorHistory has :getPressureHistory){
+			sensArray.add(
+				{
+					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getPressureHistory),
+					:convertetMethod => new Lang.Method(Tools, :pressure),
+					:image => "b",
+					:priceOfDivision => Gregorian.SECONDS_PER_HOUR
+				}
+			);
+    	}
+
+    	if (Toybox.SensorHistory has :getTemperatureHistory){
+			sensArray.add(
+				{
+					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getTemperatureHistory),
+					:convertetMethod => new Lang.Method(Tools, :temperature),
+					:image => "t",
+					:priceOfDivision => Gregorian.SECONDS_PER_HOUR
+				}
+			);
+    	}
+
+    	if (Toybox.SensorHistory has :getElevationHistory){
+			sensArray.add(
+				{
+					:iterMethod => new Lang.Method(Toybox.SensorHistory, :getElevationHistory),
+					:convertetMethod => new Lang.Method(Tools, :elevation),
+					:image => "e",
+					:priceOfDivision => Gregorian.SECONDS_PER_HOUR
+				}
+			);
+    	}
+	}
+	
+    function getStorage(key, defaultValue){
+ 		var currentValue = Application.Storage.getValue(key);
+		if (currentValue == null){
+			return defaultValue;
+		} else{
+    		return currentValue;
+    	}
+    }
+
+    function setStorage(key, value){
+    	Application.Storage.setValue(key, value);
+    }
+	
 }
